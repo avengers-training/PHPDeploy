@@ -28,6 +28,12 @@ test:
       - php -dzend_extension=xdebug.so vendor/bin/phpunit
         --coverage-clover=.framgia-ci-reports/coverage-clover.xml
         --coverage-html=.framgia-ci-reports/coverage
+deploy:
+  deployer:
+    image: framgiaciteam/deb-deploy:7.3
+    when:
+      branch: develop
+    run: dep deploy thequy -vvv
 cache:
   composer:
     folder: vendor
