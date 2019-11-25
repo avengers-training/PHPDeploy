@@ -28,12 +28,22 @@ test:
       - php -dzend_extension=xdebug.so vendor/bin/phpunit
         --coverage-clover=.framgia-ci-reports/coverage-clover.xml
         --coverage-html=.framgia-ci-reports/coverage
+environments:
+  CHATWORK_TOKEN: $$chatwork_token
+  ROOM_ID: $$room_id
 deploy:
   deployer:
     image: framgiaciteam/deb-deploy:7.3
     when:
       branch: develop
     run: dep deploy thequy -vvv
+  chatwork:
+    image: framgiaciteam/chatwork-deploy-only-plugin:latest
+    chatwork_token: $$chatwork_token
+    room_id: $$room_id
+    when:
+      branch: develop
+      status: [success, failed]
 cache:
   composer:
     folder: vendor
